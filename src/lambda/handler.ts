@@ -1,5 +1,5 @@
 export const lambdaExample = async (event: any) => {
-  console.log("TEMO Event log", event);
+  console.log("TEMP Event log", event);
   return {
     message: "Hello World",
   };
