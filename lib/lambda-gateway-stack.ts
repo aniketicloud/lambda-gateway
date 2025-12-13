@@ -48,5 +48,25 @@ export class LambdaGatewayStack extends cdk.Stack {
       value: httpApi.url ?? "",
       description: "HTTP API URL",
     });
+
+    const createProfileLambda = new NodejsFunction(
+      this,
+      "CreateProfileHandler",
+      {
+        runtime: lambda.Runtime.NODEJS_22_X,
+        entry: path.join(__dirname, "../src/lambda/handler.ts"),
+        handler: "createProfileRoute", // same name as the exported function
+        functionName: `${this.stackName}-create-profile-lambda`,
+      }
+    );
+
+    httpApi.addRoutes({
+      integration: new apigateway_integrations.HttpLambdaIntegration(
+        "CreateProfileIntegration",
+        createProfileLambda
+      ),
+      path: "/profile",
+      methods: [apigateway.HttpMethod.POST],
+    });
   }
 }
