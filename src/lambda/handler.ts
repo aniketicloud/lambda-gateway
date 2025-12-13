@@ -1,6 +1,18 @@
+import { APIGatewayProxyEventV2 } from "aws-lambda";
+
 export const lambdaExample = async (event: any) => {
   console.log("TEMP Event log", event);
   return {
     message: "Hello World",
+  };
+};
+
+export const homeRoute = async (event: APIGatewayProxyEventV2) => {
+  console.log("Home Route Evene Log", event);
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: "Welcome to the Home Route!",
+    }),
   };
 };
