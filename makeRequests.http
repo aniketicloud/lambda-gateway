@@ -1,0 +1,12 @@
+@URL = https://gk80n03zri.execute-api.ap-south-1.amazonaws.com
+
+### Get Home Route
+GET {{URL}}
+
+### Create Profile Route
+POST {{URL}}/profile
+Content-Type: application/json
+
+{
+    "username": "Jonn Cena"
+}
