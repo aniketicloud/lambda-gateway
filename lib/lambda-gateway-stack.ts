@@ -33,6 +33,11 @@ export class LambdaGatewayStack extends cdk.Stack {
     const httpApi = new apigateway.HttpApi(this, "FirstApi", {
       apiName: "FirstApi",
       description: "First API with CDK",
+      corsPreflight: {
+        allowOrigins: ['*'],
+        allowMethods: [apigateway.CorsHttpMethod.ANY],
+        allowHeaders: ['*']
+      }
     });
 
     httpApi.addRoutes({
