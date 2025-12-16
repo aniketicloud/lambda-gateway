@@ -34,10 +34,10 @@ export class LambdaGatewayStack extends cdk.Stack {
       apiName: "FirstApi",
       description: "First API with CDK",
       corsPreflight: {
-        allowOrigins: ['*'],
+        allowOrigins: ["*"],
         allowMethods: [apigateway.CorsHttpMethod.ANY],
-        allowHeaders: ['*']
-      }
+        allowHeaders: ["*"],
+      },
     });
 
     httpApi.addRoutes({
@@ -72,6 +72,22 @@ export class LambdaGatewayStack extends cdk.Stack {
       ),
       path: "/profile",
       methods: [apigateway.HttpMethod.POST],
+    });
+
+    const welcomeLambda = new NodejsFunction(this, "WelcomeHandler", {
+      runtime: lambda.Runtime.NODEJS_22_X,
+      entry: path.join(__dirname, "../src/lambda/handler.ts"),
+      handler: "welcomeRoute",
+      functionName: `${this.stackName}-welcome-handler-lambda`,
+    });
+
+    httpApi.addRoutes({
+      integration: new apigateway_integrations.HttpLambdaIntegration(
+        "WelcomeLambdaIntegration",
+        welcomeLambda
+      ),
+      path: "/welcome",
+      methods: [apigateway.HttpMethod.GET],
     });
   }
 }
