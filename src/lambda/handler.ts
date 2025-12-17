@@ -33,7 +33,7 @@ export const welcomeRoute = async (event: APIGatewayProxyEventV2) => {
   const username = process.env.USERNAME;
   const message = username
     ? "Welcome back, " + username + "!"
-    : "Welcome, guest!";
+    : "Welcome, Guest!";
   return {
     statusCode: 200,
     body: JSON.stringify({

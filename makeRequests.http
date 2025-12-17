@@ -10,3 +10,6 @@ Content-Type: application/json
 {
     "username": "Jonn Cena"
 }
+
+### Get Welcome Route
+GET {{URL}}/welcome

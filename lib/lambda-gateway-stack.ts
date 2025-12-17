@@ -79,7 +79,11 @@ export class LambdaGatewayStack extends cdk.Stack {
       entry: path.join(__dirname, "../src/lambda/handler.ts"),
       handler: "welcomeRoute",
       functionName: `${this.stackName}-welcome-handler-lambda`,
+      environment: {
+        USERNAME: "Value from CDK lambda options",
+      },
     });
+    // welcomeLambda.addEnvironment('USERNAME', 'Value from CDK lambda Outer')
 
     httpApi.addRoutes({
       integration: new apigateway_integrations.HttpLambdaIntegration(
