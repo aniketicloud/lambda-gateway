@@ -6,10 +6,19 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import * as path from "path";
 import * as apigateway from "aws-cdk-lib/aws-apigatewayv2";
 import * as apigateway_integrations from "aws-cdk-lib/aws-apigatewayv2-integrations";
+import { SecretsStack } from "./secrets-stack";
 
 export class LambdaGatewayStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  private readonly secretsStack?: SecretsStack;
+
+  constructor(
+    scope: Construct,
+    id: string,
+    props?: cdk.StackProps & { secretsStack?: SecretsStack }
+  ) {
     super(scope, id, props);
+
+    this.secretsStack = props?.secretsStack;
 
     const exampleLambda = new NodejsFunction(this, "ExampleHandler", {
       runtime: lambda.Runtime.NODEJS_22_X,
