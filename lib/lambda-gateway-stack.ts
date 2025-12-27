@@ -9,16 +9,16 @@ import * as apigateway_integrations from "aws-cdk-lib/aws-apigatewayv2-integrati
 import { SecretsStack } from "./secrets-stack";
 
 export class LambdaGatewayStack extends cdk.Stack {
-  private readonly secretsStack?: SecretsStack;
+  private readonly secretsStack: SecretsStack;
 
   constructor(
     scope: Construct,
     id: string,
-    props?: cdk.StackProps & { secretsStack?: SecretsStack }
+    props: cdk.StackProps & { secretsStack: SecretsStack }
   ) {
     super(scope, id, props);
 
-    this.secretsStack = props?.secretsStack;
+    this.secretsStack = props.secretsStack;
 
     const exampleLambda = new NodejsFunction(this, "ExampleHandler", {
       runtime: lambda.Runtime.NODEJS_22_X,

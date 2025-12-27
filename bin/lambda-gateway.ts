@@ -4,7 +4,6 @@ import { LambdaGatewayStack } from "../lib/lambda-gateway-stack";
 import { SecretsStack } from "../lib/secrets-stack";
 
 const app = new cdk.App();
-// new LambdaGatewayStack(app, "LambdaGatewayStack", {});
 
 const secretsStack = new SecretsStack(app, "SecretsStack");
 const lambdaGatewayStack = new LambdaGatewayStack(app, "LambdaGatewayStack", {
