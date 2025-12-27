@@ -8,7 +8,7 @@ export const lambdaExample = async (event: any) => {
 };
 
 export const homeRoute = async (event: APIGatewayProxyEventV2) => {
-  console.log("Home Route Evene Log", event);
+  console.log("Home Route Event Log", event);
   return {
     statusCode: 200,
     body: JSON.stringify({
