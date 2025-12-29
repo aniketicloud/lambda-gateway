@@ -7,6 +7,7 @@ import * as path from "path";
 import * as apigateway from "aws-cdk-lib/aws-apigatewayv2";
 import * as apigateway_integrations from "aws-cdk-lib/aws-apigatewayv2-integrations";
 import { SecretsStack } from "./secrets-stack";
+import * as iam from "aws-cdk-lib/aws-iam";
 
 export class LambdaGatewayStack extends cdk.Stack {
   private readonly secretsStack: SecretsStack;
@@ -109,10 +110,26 @@ export class LambdaGatewayStack extends cdk.Stack {
       handler: "loginRoute",
       functionName: `${this.stackName}-login-handler-lambda`,
     });
+
     loginLambda.addEnvironment(
       "SECRET_ID",
       this.secretsStack.secret.secretName
     ); // SECRET_ID is required in handler.ts
+
+    // Grant the Lambda function permission to read the secret from Secrets Manager.
+    // By default, Lambda functions don't have access to Secrets Manager.
+    // We need to explicitly add an IAM policy to allow GetSecretValue and DescribeSecret actions.
+    // without this AWS SDK call would be rejected by IAM
+    loginLambda.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret",
+        ],
+        resources: [this.secretsStack.secret.secretArn],
+      })
+    );
 
     httpApi.addRoutes({
       integration: new apigateway_integrations.HttpLambdaIntegration(
