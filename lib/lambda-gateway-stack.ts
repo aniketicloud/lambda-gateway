@@ -102,5 +102,25 @@ export class LambdaGatewayStack extends cdk.Stack {
       path: "/welcome",
       methods: [apigateway.HttpMethod.GET],
     });
+
+    const loginLambda = new NodejsFunction(this, "LoginHandler", {
+      runtime: lambda.Runtime.NODEJS_22_X,
+      entry: path.join(__dirname, "../src/lambda/handler.ts"),
+      handler: "loginRoute",
+      functionName: `${this.stackName}-login-handler-lambda`,
+    });
+    loginLambda.addEnvironment(
+      "SECRET_ID",
+      this.secretsStack.secret.secretName
+    ); // SECRET_ID is required in handler.ts
+
+    httpApi.addRoutes({
+      integration: new apigateway_integrations.HttpLambdaIntegration(
+        "LoginLambdaIntegration",
+        loginLambda
+      ),
+      path: "/login",
+      methods: [apigateway.HttpMethod.POST],
+    });
   }
 }
