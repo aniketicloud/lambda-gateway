@@ -13,3 +13,11 @@ Content-Type: application/json
 
 ### Get Welcome Route
 GET {{URL}}/welcome
+
+# Login route
+POST {{URL}}/login
+Content-Type: application/json
+
+{
+    "username": "trial username",
+}
