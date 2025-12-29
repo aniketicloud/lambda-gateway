@@ -48,7 +48,7 @@ export const loginRoute = async (event: APIGatewayProxyEventV2) => {
   try {
     const username = JSON.parse(event.body ?? "{}");
     const secretValue = await fetchSecret(process.env.SECRET_ID!); // add secret name or secret arn
-    const { encryptionKey } = JSON.parse(secretValue);
+    const { encryptionKey } = JSON.parse(secretValue); // add seecret value of encryptionKey with some value in AWS Secret Manager !! CHARGEABLE in AWS !!
     const hashUsername = crypto
       .createHmac("sha256", encryptionKey)
       .update(username)
